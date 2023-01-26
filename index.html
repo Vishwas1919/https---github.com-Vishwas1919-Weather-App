@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <h1>Weather App</h1>
+        <div class="row" style="text-align: center;">
+
+                <form action="">
+                    <input type="search" id="search" placeholder="Search By City Name">
+                </form>
+        </div>
+        <div class="row" id="weather">
+            <!-- <div>
+                <img src="https://openweathermap.org/img/wn/04n@2x.png" alt="">
+            </div>
+            <div>
+                <h2>32 0C</h2>
+                <h4>clear</h4>
+            </div> -->
+        </div>
+    </main>
+    <script>
+
+        const APIKEY=`3c40123fb6752eb084737c208ebd0255`;
+        const form = document.querySelector("form")
+
+
+        const weather = document.querySelector("#weather")
+        const search = document.querySelector("#search")
+
+
+      //  https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={APIkey}
+
+
+        // const API=`https://api.openweathermap.org/data/2.5/weather?
+        //      q=${city}&appid=${APIKEY}&units=metric`
+
+        // const IMGURL=`https://openweathermap.org/img/wn${data.weather[0].icon}@2x.png`
+        const getWeather=async(city)=>{
+         //const url=`https://api.openweathermap.org/data/2.5/weather?id=2172797&appid=3c40123fb6752eb084737c208ebd0255`
+
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`
+       const response= await fetch(url);
+       const data = await response.json()
+        return show(data)
+     //console.log(data)
+}
+
+const show=(data)=>{
+    console.log(data)
+    if(data.cod=="404"){
+    weather.innerHTML=`<h2 style="color:red; font-faimly:arial;">city not found</h2>`
+    return;
+  }
+   weather.innerHTML=`
+            <div>
+                <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="">
+            </div>
+            <div>
+                <h2>${data.main.temp} 0C</h2>
+                <h4>${data.weather[0].main}</h4>
+            </div>
+
+`
+
+}
+
+
+
+        form.addEventListener(
+            "submit",
+            function(event){
+                getWeather(search.value)
+                event.preventDefault();
+            }
+        )
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   https://api.openweathermap.org/data/2.5/weather?q=London&appid=3c40123fb6752eb084737c208ebd0255    
